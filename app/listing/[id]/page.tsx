@@ -1,3 +1,5 @@
+import { notFound } from "next/navigation"
+import { LISTINGS, getListing } from "@/data/listings"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
@@ -7,65 +9,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Star, Heart, Share2, MapPin, Calendar, Shield, MessageCircle } from "lucide-react"
 
+export function generateStaticParams() {
+  return LISTINGS.map(l => ({ id: String(l.id) }))
+}
+
 export default function ListingDetailPage({ params }: { params: { id: string } }) {
-  const listing = {
-    id: params.id,
-    title: "Red Komodo 6K Cinema Camera",
-    subtitle: "Professional Cinema Camera with Full Kit",
-    price: 450,
-    originalPrice: 500,
-    rating: 4.8,
-    reviews: 24,
-    location: "New York, NY",
-    images: [
-      "/placeholder.svg?height=400&width=600&text=RED+KOMODO+Main",
-      "/placeholder.svg?height=400&width=600&text=RED+KOMODO+Side",
-      "/placeholder.svg?height=400&width=600&text=RED+KOMODO+Back",
-      "/placeholder.svg?height=400&width=600&text=RED+KOMODO+Kit",
-    ],
-    description:
-      "Professional RED Komodo 6K cinema camera perfect for high-end productions. This camera delivers stunning 6K resolution with exceptional dynamic range and color science that RED is known for.",
-    specifications: {
-      Sensor: "6K S35 Global Shutter CMOS",
-      Resolution: "6144 x 3240",
-      "Frame Rates": "Up to 40fps at 6K, 60fps at 4K",
-      "Dynamic Range": "16+ stops",
-      Recording: "REDCODE RAW",
-      Mount: "RF Mount",
-      Weight: "2.1 lbs (950g)",
-    },
-    included: [
-      "RED Komodo 6K Camera Body",
-      "Canon RF 24-70mm f/2.8L IS USM Lens",
-      "2x 256GB CFexpress Cards",
-      "4x V-Mount Batteries",
-      "Battery Charger",
-      "Camera Cage",
-      "Follow Focus",
-      "Monitor",
-      "Tripod",
-      "Carrying Case",
-    ],
-    owner: {
-      name: "John Smith",
-      avatar: "/placeholder.svg?height=60&width=60&text=JS",
-      rating: 4.9,
-      reviews: 156,
-      verified: true,
-      responseTime: "Usually responds within 1 hour",
-      joinedDate: "Member since 2020",
-    },
-    availability: {
-      available: true,
-      nextAvailable: "Available now",
-    },
-    policies: {
-      deposit: "$2000 security deposit required",
-      insurance: "Renter's insurance required",
-      pickup: "Pickup only - no delivery",
-      cancellation: "Free cancellation up to 24 hours before pickup",
-    },
-  }
+  const listing = getListing(params.id)
+  if (!listing) return notFound()
 
   const reviews = [
     {
@@ -75,7 +25,7 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
       rating: 5,
       date: "2 weeks ago",
       comment:
-        "Amazing camera! John was very professional and the equipment was in perfect condition. Highly recommend!",
+        "Amazing gear! Everything worked flawlessly and was well maintained.",
     },
     {
       id: 2,
@@ -83,7 +33,7 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
       avatar: "/placeholder.svg?height=40&width=40&text=MR",
       rating: 5,
       date: "1 month ago",
-      comment: "Great experience renting from John. The camera performed flawlessly on our shoot.",
+      comment: "Great experience. Pickup was smooth and the kit was complete.",
     },
     {
       id: 3,
@@ -91,31 +41,12 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
       avatar: "/placeholder.svg?height=40&width=40&text=EK",
       rating: 4,
       date: "2 months ago",
-      comment: "Good quality camera and fair pricing. Would rent again.",
+      comment: "Solid condition and fair price.",
     },
   ]
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-4 py-3">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="text-xl font-bold text-gray-900">
-              CAMERA PARADISE
-            </Link>
-          </div>
-          <div className="flex items-center gap-4">
-            <Link href="/list-item" className="text-orange-500 hover:text-orange-600 font-medium">
-              LIST YOUR GEAR
-            </Link>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
-            </div>
-          </div>
-        </div>
-      </header>
-
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-gray-600 mb-6">
@@ -127,7 +58,7 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
             Browse
           </Link>
           <span>/</span>
-          <span className="text-gray-900">Camera Details</span>
+          <span className="text-gray-900">{listing.title}</span>
         </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -171,7 +102,7 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
                   <h1 className="text-3xl font-bold text-gray-900 mb-2">{listing.title}</h1>
                   <p className="text-lg text-gray-600">{listing.subtitle}</p>
                 </div>
-                <Badge className="bg-orange-500 text-white">Featured</Badge>
+                {listing.badge && <Badge className="bg-orange-500 text-white">{listing.badge}</Badge>}
               </div>
               <div className="flex items-center gap-4 text-sm text-gray-600">
                 <div className="flex items-center gap-1">
@@ -273,7 +204,6 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* Pricing Card */}
             <Card>
               <CardContent className="p-6">
                 <div className="text-center mb-6">
@@ -306,7 +236,6 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
               </CardContent>
             </Card>
 
-            {/* Owner Card */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Meet Your Host</CardTitle>
@@ -344,7 +273,6 @@ export default function ListingDetailPage({ params }: { params: { id: string } }
               </CardContent>
             </Card>
 
-            {/* Policies Card */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Rental Policies</CardTitle>

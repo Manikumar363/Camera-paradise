@@ -67,46 +67,6 @@ export default function RootLayout({
                   <span className="sr-only">Search</span>
                 </Button>
                 <Suspense fallback={<div>Loading...</div>}>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon" className="rounded-full">
-                        <Avatar className="h-8 w-8">
-                          <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User Avatar" />
-                          <AvatarFallback>JD</AvatarFallback>
-                        </Avatar>
-                        <span className="sr-only">Toggle user menu</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem asChild>
-                        <Link href="/profile/john-doe">Profile</Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link href="/user/dashboard">Dashboard</Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link href="/user/bookings">My Bookings</Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link href="/owner/dashboard">Owner Dashboard</Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link href="/messages">Messages</Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link href="/notifications">Notifications</Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link href="/settings">Settings</Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem>Logout</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </Suspense>
-                <Suspense fallback={<div>Loading...</div>}>
                   <Sheet>
                     <SheetTrigger asChild>
                       <Button variant="ghost" size="icon" className="md:hidden">
@@ -114,78 +74,6 @@ export default function RootLayout({
                         <span className="sr-only">Toggle navigation menu</span>
                       </Button>
                     </SheetTrigger>
-                    <SheetContent side="left">
-                      <Link href="/" className="flex items-center gap-2 font-semibold mb-6" prefetch={false}>
-                        <Camera className="h-6 w-6" />
-                        <span>Camera Rental</span>
-                      </Link>
-                      <nav className="grid gap-4 text-lg font-medium">
-                        <Link
-                          href="/browse"
-                          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground hover:text-primary"
-                          prefetch={false}
-                        >
-                          <Search className="h-5 w-5" />
-                          Browse
-                        </Link>
-                        <Link
-                          href="/list-item"
-                          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground hover:text-primary"
-                          prefetch={false}
-                        >
-                          <List className="h-5 w-5" />
-                          List Your Gear
-                        </Link>
-                        <Link
-                          href="/user/dashboard"
-                          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground hover:text-primary"
-                          prefetch={false}
-                        >
-                          <Home className="h-5 w-5" />
-                          My Dashboard
-                        </Link>
-                        <Link
-                          href="/messages"
-                          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground hover:text-primary"
-                          prefetch={false}
-                        >
-                          <MessageSquare className="h-5 w-5" />
-                          Messages
-                        </Link>
-                        <Link
-                          href="/notifications"
-                          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground hover:text-primary"
-                          prefetch={false}
-                        >
-                          <Bell className="h-5 w-5" />
-                          Notifications
-                        </Link>
-                        <Link
-                          href="/settings"
-                          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground hover:text-primary"
-                          prefetch={false}
-                        >
-                          <Settings className="h-5 w-5" />
-                          Settings
-                        </Link>
-                        <Link
-                          href="/help"
-                          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground hover:text-primary"
-                          prefetch={false}
-                        >
-                          <HelpCircle className="h-5 w-5" />
-                          Help
-                        </Link>
-                        <Link
-                          href="/admin"
-                          className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground hover:text-primary"
-                          prefetch={false}
-                        >
-                          <Users className="h-5 w-5" />
-                          Admin Panel
-                        </Link>
-                      </nav>
-                    </SheetContent>
                   </Sheet>
                 </Suspense>
               </div>
@@ -213,16 +101,6 @@ export default function RootLayout({
                   <li>
                     <Link href="/list-item" className="text-muted-foreground hover:text-primary" prefetch={false}>
                       List Your Gear
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/user/dashboard" className="text-muted-foreground hover:text-primary" prefetch={false}>
-                      My Dashboard
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/messages" className="text-muted-foreground hover:text-primary" prefetch={false}>
-                      Messages
                     </Link>
                   </li>
                 </ul>

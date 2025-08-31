@@ -7,12 +7,15 @@ import { Badge } from "@/components/ui/badge"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import ZipCodeSearch from "@/components/zip-code-search"
+import { VENDORS } from "@/data/vendors"
 import type { LucideIcon } from "lucide-react"
 import { Camera, Bone as Drone, Video, Lightbulb, Mic, Axis3D, Aperture, Package2, Search } from "lucide-react"
 
 type CategoryDef = { name: string; icon: LucideIcon; count?: number }
 
 export default function HomePage() {
+  const BASE_LISTING_PATH = "/listing" // change to "/listing" if your dynamic folder is /listing/[id]
+
   const featuredProducts = [
     {
       id: 1,
@@ -72,7 +75,7 @@ export default function HomePage() {
       reviews: 24,
     },
     {
-      id: 2,
+      id: 5,
       title: "ARRIFLEX PRO",
       subtitle: "Professional Camera",
       price: 380,
@@ -83,7 +86,7 @@ export default function HomePage() {
       reviews: 156,
     },
     {
-      id: 3,
+      id: 6,
       title: "Sony FX3",
       subtitle: "Full Frame Cinema Camera",
       price: 285,
@@ -94,7 +97,7 @@ export default function HomePage() {
       reviews: 89,
     },
     {
-      id: 4,
+      id: 7,
       title: "DJI Phantom",
       subtitle: "Professional Drone",
       price: 165,
@@ -104,15 +107,6 @@ export default function HomePage() {
       rating: 4.6,
       reviews: 203,
     },
-  ]
-
-  const vendors = [
-    { name: "Panavision", logo: "/panavision.png" },
-    { name: "Penmen Studios", logo: "/penmen-studios.png" },
-    { name: "Fox Rentals", logo: "/fox-rentals.png" },
-    { name: "Customise", logo: "/customise.png" },
-    { name: "Tygt Rentals", logo: "/tygt-rentals.png" },
-    { name: "Airhead Rentals", logo: "/airhead-rentals.png" },
   ]
 
   return (
@@ -147,23 +141,25 @@ export default function HomePage() {
             <CarouselContent className="-ml-4">
               {featuredProducts.map((product) => (
                 <CarouselItem key={product.id} className="pl-4 md:basis-1/2 lg:basis-1/4">
-                  <Card className="overflow-hidden hover:shadow-lg transition-shadow bg-black text-white relative">
-                    <div className="absolute top-3 right-3 z-10">
-                      <Badge variant="secondary" className="bg-orange-500 text-white">
-                        {product.badge}
-                      </Badge>
-                    </div>
-                    <CardContent className="p-0">
-                      <div className="aspect-square bg-gradient-to-br from-gray-800 to-black flex items-center justify-center">
-                        <div className="text-center">
-                          <h3 className="text-xl font-bold mb-1">{product.title}</h3>
-                          <p className="text-sm text-gray-300 mb-4">{product.subtitle}</p>
-                          <div className="text-2xl font-bold">${product.price}</div>
-                          <div className="text-xs text-gray-400">per day</div>
-                        </div>
+                  <Link href={`${BASE_LISTING_PATH}/${product.id}`} className="block group">
+                    <Card className="overflow-hidden hover:shadow-lg transition-shadow bg-black text-white relative">
+                      <div className="absolute top-3 right-3 z-10">
+                        <Badge variant="secondary" className="bg-orange-500 text-white">
+                          {product.badge}
+                        </Badge>
                       </div>
-                    </CardContent>
-                  </Card>
+                      <CardContent className="p-0">
+                        <div className="aspect-square bg-gradient-to-br from-gray-800 to-black flex items-center justify-center group-hover:opacity-90 transition">
+                          <div className="text-center">
+                            <h3 className="text-xl font-bold mb-1">{product.title}</h3>
+                            <p className="text-sm text-gray-300 mb-4">{product.subtitle}</p>
+                            <div className="text-2xl font-bold">${product.price}</div>
+                            <div className="text-xs text-gray-400">per day</div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 </CarouselItem>
               ))}
             </CarouselContent>
@@ -215,28 +211,30 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {productGrid.map((product) => (
-              <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                <CardContent className="p-0">
-                  <div className="relative">
-                    <Image
-                      src={product.image || "/placeholder.svg"}
-                      alt={product.title}
-                      width={200}
-                      height={200}
-                      className="w-full h-48 object-cover"
-                    />
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold text-gray-900 mb-1">{product.title}</h3>
-                    <p className="text-sm text-gray-600 mb-2">{product.subtitle}</p>
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg font-bold text-gray-900">${product.price}</span>
-                      <span className="text-sm text-gray-500 line-through">${product.originalPrice}</span>
-                      <span className="text-xs text-gray-600">per day</span>
+              <Link key={product.id} href={`${BASE_LISTING_PATH}/${product.id}`} className="group">
+                <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+                  <CardContent className="p-0">
+                    <div className="relative">
+                      <Image
+                        src={product.image || "/placeholder.svg"}
+                        alt={product.title}
+                        width={200}
+                        height={200}
+                        className="w-full h-48 object-cover group-hover:opacity-90 transition"
+                      />
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                    <div className="p-4">
+                      <h3 className="font-semibold text-gray-900 mb-1 group-hover:text-orange-500">{product.title}</h3>
+                      <p className="text-sm text-gray-600 mb-2">{product.subtitle}</p>
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg font-bold text-gray-900">${product.price}</span>
+                        <span className="text-sm text-gray-500 line-through">${product.originalPrice}</span>
+                        <span className="text-xs text-gray-600">per day</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         </div>
@@ -252,9 +250,13 @@ export default function HomePage() {
             </Button>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            {vendors.map((vendor) => (
-              <div key={vendor.name} className="text-center">
-                <div className="w-20 h-20 mx-auto mb-3 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden">
+            {VENDORS.slice(0, 6).map((vendor) => (
+              <Link
+                key={vendor.id}
+                href={`/vendor/${vendor.slug}`}
+                className="group text-center block"
+              >
+                <div className="w-20 h-20 mx-auto mb-3 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden ring-0 group-hover:ring-2 ring-orange-400 transition">
                   <Image
                     src={vendor.logo || "/placeholder.svg"}
                     alt={vendor.name}
@@ -263,8 +265,8 @@ export default function HomePage() {
                     className="object-contain"
                   />
                 </div>
-                <p className="text-sm font-medium text-gray-700">{vendor.name}</p>
-              </div>
+                <p className="text-sm font-medium text-gray-700 group-hover:text-orange-500">{vendor.name}</p>
+              </Link>
             ))}
           </div>
         </div>
@@ -281,28 +283,30 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {productGrid.map((product) => (
-              <Card key={`popular-${product.id}`} className="overflow-hidden hover:shadow-lg transition-shadow">
-                <CardContent className="p-0">
-                  <div className="relative">
-                    <Image
-                      src={product.image || "/placeholder.svg"}
-                      alt={product.title}
-                      width={200}
-                      height={200}
-                      className="w-full h-48 object-cover"
-                    />
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold text-gray-900 mb-1">{product.title}</h3>
-                    <p className="text-sm text-gray-600 mb-2">{product.subtitle}</p>
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg font-bold text-gray-900">${product.price}</span>
-                      <span className="text-sm text-gray-500 line-through">${product.originalPrice}</span>
-                      <span className="text-xs text-gray-600">per day</span>
+              <Link key={`popular-${product.id}`} href={`${BASE_LISTING_PATH}/${product.id}`} className="group">
+                <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+                  <CardContent className="p-0">
+                    <div className="relative">
+                      <Image
+                        src={product.image || "/placeholder.svg"}
+                        alt={product.title}
+                        width={200}
+                        height={200}
+                        className="w-full h-48 object-cover group-hover:opacity-90 transition"
+                      />
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                    <div className="p-4">
+                      <h3 className="font-semibold text-gray-900 mb-1 group-hover:text-orange-500">{product.title}</h3>
+                      <p className="text-sm text-gray-600 mb-2">{product.subtitle}</p>
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg font-bold text-gray-900">${product.price}</span>
+                        <span className="text-sm text-gray-500 line-through">${product.originalPrice}</span>
+                        <span className="text-xs text-gray-600">per day</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         </div>
@@ -319,28 +323,30 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {productGrid.map((product) => (
-              <Card key={`recent-${product.id}`} className="overflow-hidden hover:shadow-lg transition-shadow">
-                <CardContent className="p-0">
-                  <div className="relative">
-                    <Image
-                      src={product.image || "/placeholder.svg"}
-                      alt={product.title}
-                      width={200}
-                      height={200}
-                      className="w-full h-48 object-cover"
-                    />
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold text-gray-900 mb-1">{product.title}</h3>
-                    <p className="text-sm text-gray-600 mb-2">{product.subtitle}</p>
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg font-bold text-gray-900">${product.price}</span>
-                      <span className="text-sm text-gray-500 line-through">${product.originalPrice}</span>
-                      <span className="text-xs text-gray-600">per day</span>
+              <Link key={`recent-${product.id}`} href={`${BASE_LISTING_PATH}/${product.id}`} className="group">
+                <Card className="overflow-hidden hover:shadow-lg transition-shadow">
+                  <CardContent className="p-0">
+                    <div className="relative">
+                      <Image
+                        src={product.image || "/placeholder.svg"}
+                        alt={product.title}
+                        width={200}
+                        height={200}
+                        className="w-full h-48 object-cover group-hover:opacity-90 transition"
+                      />
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                    <div className="p-4">
+                      <h3 className="font-semibold text-gray-900 mb-1 group-hover:text-orange-500">{product.title}</h3>
+                      <p className="text-sm text-gray-600 mb-2">{product.subtitle}</p>
+                      <div className="flex items-center gap-2">
+                        <span className="text-lg font-bold text-gray-900">${product.price}</span>
+                        <span className="text-sm text-gray-500 line-through">${product.originalPrice}</span>
+                        <span className="text-xs text-gray-600">per day</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         </div>
